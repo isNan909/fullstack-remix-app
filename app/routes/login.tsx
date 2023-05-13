@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import type {V2_MetaFunction} from "@remix-run/node";
-import {ActionFunction, LoaderFunction} from '@remix-run/node';
+import type { V2_MetaFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction } from '@remix-run/node';
 import { useActionData, Link } from "@remix-run/react";
+
+import { authenticator } from "~/utils/auth.server";
 import { Layout } from '~/components/layout';
 import { Textfield } from '~/components/textfield';
-import {authenticator} from "~/utils/auth.server";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "New Remix App login" }];
