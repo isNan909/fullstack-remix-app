@@ -23,8 +23,8 @@ model Task {
   updatedAt DateTime @updatedAt
   message   String
   category  Category @default(OTHERS)
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?  @db.ObjectId
+  taskId    String   @db.ObjectId
+  postedBy  User     @relation(fields: [taskId], references: [id])
 }
 
 enum Category {

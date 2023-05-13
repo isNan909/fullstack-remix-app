@@ -1,5 +1,5 @@
 export interface TaskData {
-  message:   any;
+  message:  any;
   category:  any;
-  taskId?: any;
+  postedBy: any;
 }

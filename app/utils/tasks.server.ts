@@ -16,7 +16,6 @@ export const getMyTasks = async (userID: string) => {
         },
       },
     });
-    console.log(taskById, 'taskById');
     return taskById;
   }
 
@@ -25,9 +24,9 @@ export const getMyTasks = async (userID: string) => {
   }
 };
 
-export const createTask = async ({category, message} : TaskData) => {
+export const createTask = async ({category, message, postedBy} : TaskData) => {
   const taskById = await prisma.task.create({
-    data: { category, message },
+    data: { category, message, postedBy },
   });
   if(!taskById){
     return json({error: 'Could not post the task'})

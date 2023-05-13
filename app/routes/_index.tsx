@@ -7,6 +7,7 @@ import {Form, useLoaderData} from "@remix-run/react";
 import {LoaderFunction} from "@remix-run/node";
 import {createTask, getMyTasks} from "~/utils/tasks.server";
 import { Taskform } from "~/components/taskform";
+import {Tasklist, TaskListProps} from "~/components/tasklist";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "New Remix App" }];
@@ -31,12 +32,17 @@ export const action: ActionFunction = async ({ request }) => {
     case "new": {
       const Category = form.get("category")
       const Message = form.get("message")
-      // post the form
-      const newTask = createTask({
+      const user = await authenticator.isAuthenticated(request)
+      const newTask = await createTask({
         category: Category,
-        message: Message
+        message: Message,
+        postedBy: {
+          connect: {
+            id:  user.id
+          }
+        }
       })
-      return ''
+      return newTask
     }
     default:
       return null
@@ -45,23 +51,24 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   const { user, userTask } = useLoaderData<typeof loader>()
-  // console.log(user, userTask)
+  // console.log(userTask.task, 'task list')
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <div className="d-flex flex-row">
         <div>
-          <h1 className="text-3xl font-bold underline text-red-500">
+          <h5 className="text-xl font-bold">
             Welcome to remix app {user.name}!
-          </h1>
+          </h5>
         </div>
-        <div>
+        <div className="flex items-center">
+          <h1 className="text-3xl font-bold py-3">Tasklist tracking</h1>
           {user ? (
             <Form method="post">
               <button
                 type="submit"
                 name="action"
                 value="logout"
-                className="bg-white text-black border-2 border-black py-1 px-3 rounded-md font-semibold"
+                className="text-red-500 py-1 px-3 rounded-md font-semibold"
               >
                 Logout
               </button>
@@ -73,7 +80,12 @@ export default function Index() {
       <Taskform/>
       <br/>
       <div>
-        {userTask.length ? "you have some tasks" : "no task list"}
+        {userTask.task.length ? <> {userTask.task.map((task: TaskListProps) => {
+          return(
+            <Tasklist message={task.message} category={task.category}/>
+          )
+        })}
+        </> : "no task list"}
       </div>
     </div>
   );
