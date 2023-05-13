@@ -46,9 +46,8 @@ export const action: ActionFunction = async ({ request }) => {
     }
     case "delete": {
       const id = form.get("id")
-      // console.log("delete task", id)
       const deletedTask = await deleteTask(id);
-      return deletedTask
+      return deletedTask;
     }
     default:
       return null
@@ -57,7 +56,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   const { user, userTask } = useLoaderData<typeof loader>()
-  // console.log(userTask.task, 'task list')
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <div className="d-flex flex-row">
