@@ -1,35 +1,27 @@
 import React, { useState } from "react";
-import type { V2_MetaFunction } from "@remix-run/node";
-import { ActionFunction, json, LoaderFunction, redirect } from '@remix-run/node';
+import type {LoaderArgs, V2_MetaFunction} from "@remix-run/node";
+import {ActionFunction, json, LoaderFunction} from '@remix-run/node';
 import { useActionData, Link } from "@remix-run/react";
 import { Layout } from '~/components/layout';
 import { Textfield } from '~/components/textfield';
+import {authenticator} from "~/utils/auth.server";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "New Remix App login" }];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  // If there's already a user in the session, redirect to the main page
-  return ''
+  const user = await authenticator.isAuthenticated(request, {
+    successRedirect: "/",
+  })
+  return user
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const action = form.get("_action");
-  const email = form.get("email");
-  const password = form.get("password");
-
-  if (
-    typeof action !== "string" ||
-    typeof email !== "string" ||
-    typeof password !== "string"
-  ) {
-    return json({ error: `Invalid Form Data`, form: action }, { status: 400 });
-  }
-
-  console.log('login new user', email, password)
-  return json({ message: `Form submitted` });
+  return authenticator.authenticate("form", request, {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
 }
 
 export default function Login() {
@@ -68,7 +60,7 @@ export default function Login() {
             </button>
           </div>
         </form>
-        <p className="text-gray-600">Already have an account?<Link to="/signup"><span className="text-red-600 px-2 underline">Signup</span></Link></p>
+        <p className="text-gray-600">Dont have an account?<Link to="/signup"><span className="text-red-600 px-2 underline">Signup</span></Link></p>
       </div>
     </Layout>
   );
