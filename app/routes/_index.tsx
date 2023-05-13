@@ -1,6 +1,5 @@
 import type {
   ActionFunction,
-  LoaderArgs,
   V2_MetaFunction
 } from "@remix-run/node";
 import { authenticator } from "~/utils/auth.server";

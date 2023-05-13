@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import type {LoaderArgs, V2_MetaFunction} from "@remix-run/node";
-import {ActionFunction, json, LoaderFunction} from '@remix-run/node';
+import type {V2_MetaFunction} from "@remix-run/node";
+import {ActionFunction, LoaderFunction} from '@remix-run/node';
 import { useActionData, Link } from "@remix-run/react";
 import { Layout } from '~/components/layout';
 import { Textfield } from '~/components/textfield';
