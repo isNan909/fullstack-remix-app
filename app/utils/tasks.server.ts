@@ -37,3 +37,15 @@ export const createTask = async ({category, message, postedBy} : TaskData) => {
     payload: taskById,
   })
 }
+
+export const deleteTask = async (id: any) => {
+  const taskById = await prisma.task.delete({ where: { id } });
+  if(!taskById){
+    return json({error: 'Could not post the task'})
+  }
+  return json({
+    message: "Task deleted",
+    success: "true",
+    payload: id,
+  })
+}

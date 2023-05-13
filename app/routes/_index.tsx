@@ -5,7 +5,7 @@ import type {
 import { authenticator } from "~/utils/auth.server";
 import {Form, useLoaderData} from "@remix-run/react";
 import {LoaderFunction} from "@remix-run/node";
-import {createTask, getMyTasks} from "~/utils/tasks.server";
+import {createTask, getMyTasks, deleteTask} from "~/utils/tasks.server";
 import { Taskform } from "~/components/taskform";
 import {Tasklist, TaskListProps} from "~/components/tasklist";
 
@@ -44,6 +44,12 @@ export const action: ActionFunction = async ({ request }) => {
       })
       return newTask
     }
+    case "delete": {
+      const id = form.get("id")
+      // console.log("delete task", id)
+      const deletedTask = await deleteTask(id);
+      return deletedTask
+    }
     default:
       return null
   }
@@ -56,9 +62,9 @@ export default function Index() {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <div className="d-flex flex-row">
         <div>
-          <h5 className="text-xl font-bold">
-            Welcome to remix app {user.name}!
-          </h5>
+          <span className="text-xs font-normal">
+            Welcome {user.name}!
+          </span>
         </div>
         <div className="flex items-center">
           <h1 className="text-3xl font-bold py-3">Tasklist tracking</h1>
@@ -82,7 +88,7 @@ export default function Index() {
       <div>
         {userTask.task.length ? <> {userTask.task.map((task: TaskListProps) => {
           return(
-            <Tasklist message={task.message} category={task.category}/>
+            <Tasklist key={task.id} id={task.id} message={task.message} category={task.category}/>
           )
         })}
         </> : "no task list"}
