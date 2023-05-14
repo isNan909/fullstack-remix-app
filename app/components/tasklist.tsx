@@ -1,4 +1,5 @@
-import {Form} from "@remix-run/react";
+import { Form } from "@remix-run/react";
+import { HiTrash } from "react-icons/hi2";
 
 export interface TaskListProps {
   category: any
@@ -9,10 +10,10 @@ export interface TaskListProps {
 export function Tasklist({ category, message, id }: TaskListProps) {
   return (
   <>
-    <div className="flex py-1">
+    <div className="flex justify-between items-center">
       <div>
-        {message}
-        <span className="text-xs bg-green-500 p-2">{category}</span>
+        <p className="text-md">{message}</p>
+        <span className="text-xs bg-green-100 border px-2 py-1 rounded text-green-700">{category}</span>
       </div>
       <div>
         <Form method="post">
@@ -22,7 +23,7 @@ export function Tasklist({ category, message, id }: TaskListProps) {
             type="submit"
             value="delete"
           >
-            Delete
+            <HiTrash/>
           </button>
           <input type="hidden" name="id" value={id} />
         </Form>

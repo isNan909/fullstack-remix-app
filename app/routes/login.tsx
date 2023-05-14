@@ -39,7 +39,7 @@ export default function Login() {
 
   return (
     <Layout>
-      <div className="h-full justify-center items-center flex flex-col gap-y-5">
+      <div className="h-full justify-center bg-yellow-100 items-center flex flex-col gap-y-5">
         <form method="POST" className="rounded-2xl bg-white p-6 w-96">
           <h2 className="text-3xl font-extrabold text-black-600 mb-5">Login</h2>
           <Textfield

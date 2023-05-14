@@ -3,14 +3,14 @@ import type {
   V2_MetaFunction
 } from "@remix-run/node";
 import { authenticator } from "~/utils/auth.server";
-import {Form, useLoaderData} from "@remix-run/react";
-import {LoaderFunction} from "@remix-run/node";
-import {createTask, getMyTasks, deleteTask} from "~/utils/tasks.server";
+import { Form, useLoaderData } from "@remix-run/react";
+import { LoaderFunction } from "@remix-run/node";
+import { createTask, getMyTasks, deleteTask } from "~/utils/tasks.server";
 import { Taskform } from "~/components/taskform";
-import {Tasklist, TaskListProps} from "~/components/tasklist";
+import { Tasklist, TaskListProps } from "~/components/tasklist";
 
 export const meta: V2_MetaFunction = () => {
-  return [{ title: "New Remix App" }];
+  return [{ title: "Fullstack Remix App" }];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -46,8 +46,8 @@ export const action: ActionFunction = async ({ request }) => {
     }
     case "delete": {
       const id = form.get("id")
-      const deletedTask = await deleteTask(id);
-      return deletedTask;
+      const deletedTask = await deleteTask(id)
+      return deletedTask
     }
     default:
       return null
@@ -57,39 +57,38 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const { user, userTask } = useLoaderData<typeof loader>()
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <div className="d-flex flex-row">
-        <div>
-          <span className="text-xs font-normal">
+    <div className="h-full bg-yellow-100 pt-10">
+      <div className="max-w-md mx-auto items-left flex flex-col bg-white p-6">
+        <div className="d-flex flex-row mb-10">
+          <h2 className="text-sm font-normal text-gray-500">
             Welcome {user.name}!
-          </span>
+          </h2>
+          <div className="flex items-center">
+            <h1 className="text-3xl font-bold pe-2">Task tracking app</h1>
+            {user ? (
+              <Form method="post">
+                <button
+                  type="submit"
+                  name="action"
+                  value="logout"
+                  className="text-red-500 py-1 border px-3 text-sm rounded-md font-semibold"
+                >
+                  Logout
+                </button>
+              </Form>
+            ) : null}
+          </div>
         </div>
-        <div className="flex items-center">
-          <h1 className="text-3xl font-bold py-3">Tasklist tracking</h1>
-          {user ? (
-            <Form method="post">
-              <button
-                type="submit"
-                name="action"
-                value="logout"
-                className="text-red-500 py-1 px-3 rounded-md font-semibold"
-              >
-                Logout
-              </button>
-            </Form>
-          ) : null}
+        <Taskform/>
+        <br/>
+        <div className="grid gap-5">
+          {userTask.task.length ? <> {userTask.task.map((task: TaskListProps) => {
+            return(
+              <Tasklist key={task.id} id={task.id} message={task.message} category={task.category}/>
+            )
+          })}
+          </> : "no task list"}
         </div>
-      </div>
-      <br/>
-      <Taskform/>
-      <br/>
-      <div>
-        {userTask.task.length ? <> {userTask.task.map((task: TaskListProps) => {
-          return(
-            <Tasklist key={task.id} id={task.id} message={task.message} category={task.category}/>
-          )
-        })}
-        </> : "no task list"}
       </div>
     </div>
   );

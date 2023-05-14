@@ -2,7 +2,7 @@ interface FormFieldProps {
   htmlFor: string
   label: string
   type?: string
-  value: any
+  value: string
   onChange?: (...args: any) => any
 }
 

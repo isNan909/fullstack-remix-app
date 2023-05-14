@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request, {
     successRedirect: "/"
   })
-  return {user}
+  return { user }
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -35,8 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ error: `Invalid Form Data`, form: action }, { status: 400 });
   }
 
-  const newUser = await createUser({email, password, name})
-  console.log(newUser)
+  await createUser({email, password, name})
 
   return await authenticator.authenticate("form", request, {
     successRedirect: "/",
