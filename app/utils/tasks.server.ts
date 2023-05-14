@@ -1,6 +1,6 @@
-import { prisma } from "./prisma.server";
-import { json } from "@remix-run/node";
-import { TaskData } from "~/types/jobs";
+import { prisma } from "./prisma.server"
+import { json } from "@remix-run/node"
+import { TaskData } from "~/types/jobs"
 
 export const getMyTasks = async (userID: string) => {
   if (userID) {

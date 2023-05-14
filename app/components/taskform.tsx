@@ -1,4 +1,5 @@
 import { Form } from "@remix-run/react";
+import { categories } from '~/types/jobs'
 
 export function Taskform() {
   return (
@@ -13,17 +14,15 @@ export function Taskform() {
             name="category"
             id="category"
             className="border-2 w-full rounded-md mr-8 border-gray-600 px-3 py-1 h-9"
-            defaultValue="OTHERS"
+            defaultValue={categories[0].name}
           >
-            <option key="home" value="HOME">
-              Home
-            </option>
-            <option key="office" value="OFFICE">
-              Office
-            </option>
-            <option key="others" value="OTHERS">
-              Others
-            </option>
+            {categories.map((category, index) => {
+              return(
+                <option key={index} value={category.value}>
+                  {category.name}
+                </option>
+              )
+            })}
           </select>
         </div>
         <div className="mb-5">

@@ -87,7 +87,7 @@ export default function Index() {
               <Tasklist key={task.id} id={task.id} message={task.message} category={task.category}/>
             )
           })}
-          </> : "no task list"}
+          </> : "😳 No task"}
         </div>
       </div>
     </div>
